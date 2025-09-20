@@ -6,33 +6,40 @@
 #' outcome data, runs MR with different methods (IVW, MR-Egger, and Weighted
 #' Median), and visualises the resulting p-values.
 #'
-#' @param exposure_id Character. The ID of the exposure GWAS 
+#' @param exposure_id Character. The ID of the exposure GWAS
 #'   (e.g., "ieu-b-4872").
-#' @param outcome_id Character. The ID of the outcome GWAS 
+#' @param outcome_id Character. The ID of the outcome GWAS
 #'   (e.g., "ukb-b-16890").
 #'
 #' @return A ggplot object showing MR p-values across different IV selection
-#'   thresholds and methods.  
+#'   thresholds and methods.
 #'   The function also prints the underlying results table to the console.
 #'
-#' @details 
-#' - Tested thresholds are fixed at \code{c(1e-5, 5e-6, 5e-7, 5e-8)}.  
-#' - Three MR methods are included:  
-#'   * IVW (\code{mr_ivw})  
-#'   * MR-Egger regression (\code{mr_egger_regression})  
-#'   * Weighted Median (\code{mr_weighted_median})  
-#' - P-values are plotted on a \code{log10} scale (minimum set to 1e-4).  
-#' - Combinations that fail are imputed with \code{p = 1}.  
+#' @details
+#' - Tested thresholds are fixed at \code{c(1e-5, 5e-6, 5e-7, 5e-8)}.
+#' - Three MR methods are included:
+#'   * IVW (\code{mr_ivw})
+#'   * MR-Egger regression (\code{mr_egger_regression})
+#'   * Weighted Median (\code{mr_weighted_median})
+#' - P-values are plotted on a \code{log10} scale (minimum set to 1e-4).
+#' - Combinations that fail are imputed with \code{p = 1}.
 #'
-#' @seealso 
-#' \code{\link[TwoSampleMR]{extract_instruments}},  
-#' \code{\link[TwoSampleMR]{extract_outcome_data}},  
-#' \code{\link[TwoSampleMR]{harmonise_data}},  
+#' @seealso
+#' \code{\link[TwoSampleMR]{extract_instruments}},
+#' \code{\link[TwoSampleMR]{extract_outcome_data}},
+#' \code{\link[TwoSampleMR]{harmonise_data}},
 #' \code{\link[TwoSampleMR]{mr}}
 #'
+#' @importFrom dplyr ungroup %>% mutate summarise group_by
+#' @importFrom ggplot2 ggplot aes geom_point geom_line geom_text
+#'   scale_size_continuous scale_color_gradientn scale_y_log10
+#'   labs theme_classic theme element_text element_rect element_line element_blank
+#' @importFrom ggrepel geom_text_repel
+#' @importFrom data.table rbindlist
+#' @importFrom parallel mclapply
+#' @importFrom reshape2 melt
+#' @importFrom scales comma
 #' @importFrom TwoSampleMR extract_instruments extract_outcome_data harmonise_data mr
-#' @importFrom ggplot2 ggplot aes geom_point geom_line labs theme_classic
-#' @importFrom dplyr %>% mutate filter
 #'
 #' @examples
 #' \dontrun{

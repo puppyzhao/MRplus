@@ -1,35 +1,42 @@
 #' Visualize the number of instruments across LD pruning and p-value thresholds
 #'
 #' This function extracts instruments for a given exposure from MR-Base
-#' (via \code{TwoSampleMR::extract_instruments}) under multiple 
-#' p-value thresholds and LD pruning settings. It summarizes the SNP counts 
-#' and generates a visualization of how instrument selection is influenced 
+#' (via \code{TwoSampleMR::extract_instruments}) under multiple
+#' p-value thresholds and LD pruning settings. It summarizes the SNP counts
+#' and generates a visualization of how instrument selection is influenced
 #' by these parameters.
 #'
 #' @param exposure_id Character. The ID of the exposure GWAS (e.g., "ieu-b-4872").
 #' @param p_values Numeric vector. A set of p-value thresholds to test for instrument selection.
 #'   Default is \code{c(5e-8, 5e-7, 5e-6, 1e-5)}.
-#' @param r2_kb_combinations List of numeric vectors. Each element should be of the form 
+#' @param r2_kb_combinations List of numeric vectors. Each element should be of the form
 #'   \code{c(r2, kb)} specifying the LD pruning threshold (r2) and window size (kb).
 #'   Default is \code{list(c(0.0001, 1000), c(0.001, 10000), c(0.01, 100000))}.
 #'
-#' @return A ggplot object showing SNP counts under different thresholds and LD settings.  
+#' @return A ggplot object showing SNP counts under different thresholds and LD settings.
 #'   The function also prints progress information to the console.
 #'
-#' @details 
-#' - The "Default" setting corresponds to \code{r2 = 0.001, kb = 10000}, which is 
+#' @details
+#' - The "Default" setting corresponds to \code{r2 = 0.001, kb = 10000}, which is
 #'   the default in \code{TwoSampleMR}.
-#' - The output plot shows:  
-#'   * Line + points: SNP counts under the default LD pruning  
-#'   * Triangles and squares: SNP counts under min and max LD pruning  
-#'   * Red error bars: range (min–max) across LD pruning at each p-value threshold  
-#'   * Labels: annotated min and max values  
+#' - The output plot shows:
+#'   * Line + points: SNP counts under the default LD pruning
+#'   * Triangles and squares: SNP counts under min and max LD pruning
+#'   * Red error bars: range (min–max) across LD pruning at each p-value threshold
+#'   * Labels: annotated min and max values
 #'
 #' @seealso \code{\link[TwoSampleMR]{extract_instruments}}
 #'
-#' @importFrom TwoSampleMR extract_instruments
-#' @importFrom ggplot2 ggplot aes geom_line geom_point labs theme_minimal
-#' @importFrom dplyr %>% group_by summarise arrange
+#' @importFrom dplyr ungroup %>% mutate summarise group_by
+#' @importFrom ggplot2 ggplot aes geom_point geom_line geom_text
+#'   scale_size_continuous scale_color_gradientn scale_y_log10
+#'   labs theme_classic theme element_text element_rect element_line element_blank
+#' @importFrom ggrepel geom_text_repel
+#' @importFrom data.table rbindlist
+#' @importFrom parallel mclapply
+#' @importFrom reshape2 melt
+#' @importFrom scales comma
+#' @importFrom TwoSampleMR extract_instruments extract_outcome_data harmonise_data mr
 #'
 #' @examples
 #' \dontrun{

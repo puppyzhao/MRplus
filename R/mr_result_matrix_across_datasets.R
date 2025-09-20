@@ -5,37 +5,43 @@
 #' It aggregates significance counts and mean p-values, and visualises the
 #' results in a bubble plot.
 #'
-#' @param exposure_ids Character vector. IDs of exposure GWAS datasets 
+#' @param exposure_ids Character vector. IDs of exposure GWAS datasets
 #'   (e.g., \code{c("ieu-b-4872", "bbj-a-80")}).
-#' @param outcome_ids Character vector. IDs of outcome GWAS datasets 
+#' @param outcome_ids Character vector. IDs of outcome GWAS datasets
 #'   (e.g., \code{c("ukb-b-16890", "ebi-a-GCST90013972")}).
-#' @param p_values Numeric vector. P-value thresholds for instrument 
+#' @param p_values Numeric vector. P-value thresholds for instrument
 #'   selection (e.g., \code{c(1e-5, 5e-6, 5e-7, 5e-8)}).
 #'
-#' @return A ggplot object showing exposure–outcome pairs as a bubble plot:  
-#'   - Bubble size = count of significant MR results (p < 0.05).  
-#'   - Bubble color = \code{-log10(mean p-value)}.  
+#' @return A ggplot object showing exposure–outcome pairs as a bubble plot:
+#'   - Bubble size = count of significant MR results (p < 0.05).
+#'   - Bubble color = \code{-log10(mean p-value)}.
 #'   The function also returns a data frame of aggregated results invisibly.
 #'
 #' @details
-#' - Three MR methods are applied: IVW, MR-Egger, and Weighted Median.  
+#' - Three MR methods are applied: IVW, MR-Egger, and Weighted Median.
 #' - For each exposure–outcome pair and set of thresholds, the function
-#'   calculates:  
-#'   * the number of significant MR results (\code{p < 0.05}),  
-#'   * the mean p-value,  
-#'   * and its \code{-log10} transformation.  
-#' - Bubble sizes are capped at 12 (the maximum number of possible tests).  
+#'   calculates:
+#'   * the number of significant MR results (\code{p < 0.05}),
+#'   * the mean p-value,
+#'   * and its \code{-log10} transformation.
+#' - Bubble sizes are capped at 12 (the maximum number of possible tests).
 #'
-#' @seealso 
-#' \code{\link[TwoSampleMR]{extract_instruments}},  
-#' \code{\link[TwoSampleMR]{extract_outcome_data}},  
-#' \code{\link[TwoSampleMR]{harmonise_data}},  
+#' @seealso
+#' \code{\link[TwoSampleMR]{extract_instruments}},
+#' \code{\link[TwoSampleMR]{extract_outcome_data}},
+#' \code{\link[TwoSampleMR]{harmonise_data}},
 #' \code{\link[TwoSampleMR]{mr}}
 #'
+#' @importFrom dplyr ungroup %>% mutate summarise group_by
+#' @importFrom ggplot2 ggplot aes geom_point geom_line geom_text
+#'   scale_size_continuous scale_color_gradientn scale_y_log10
+#'   labs theme_classic theme element_text element_rect element_line element_blank
+#' @importFrom ggrepel geom_text_repel
+#' @importFrom data.table rbindlist
+#' @importFrom parallel mclapply
+#' @importFrom reshape2 melt
+#' @importFrom scales comma
 #' @importFrom TwoSampleMR extract_instruments extract_outcome_data harmonise_data mr
-#' @importFrom ggplot2 ggplot aes geom_point labs theme_classic scale_color_gradientn
-#' @importFrom dplyr %>% mutate summarise filter
-#' @importFrom utils setTxtProgressBar txtProgressBar
 #'
 #' @examples
 #' \dontrun{
