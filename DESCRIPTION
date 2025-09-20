@@ -1,0 +1,28 @@
+Package: MRplus
+Title: Visualising Robustness of Mendelian Randomization Results
+Version: 1.0.1
+Authors@R: 
+    person("Jiahan", "Zhao", , "Loaffff@icloud.com", role = c("aut", "cre"))
+Description: Provides a set of visualization tools for assessing the robustness 
+    of Mendelian randomization (MR) results. The package implements three core 
+    functions: (1) inspecting how linkage disequilibrium (LD) pruning parameters 
+    affect the number of selected instruments; (2) comparing MR estimates across 
+    multiple instrument selection thresholds; and (3) summarising the robustness 
+    of multi-exposure and multi-outcome MR analyses using bubble plots. These 
+    functions facilitate sensitivity checks, robustness evaluation, and detection 
+    of potential publication bias in MR studies.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports: 
+    data.table,
+    dplyr,
+    ggplot2,
+    ggrepel,
+    ieugwasr,
+    parallel,
+    reshape2,
+    scales,
+    tidyr,
+    TwoSampleMR
