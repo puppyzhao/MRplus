@@ -30,16 +30,19 @@
 #' \code{\link[TwoSampleMR]{harmonise_data}},
 #' \code{\link[TwoSampleMR]{mr}}
 #'
-#' @importFrom dplyr ungroup %>% mutate summarise group_by
-#' @importFrom ggplot2 ggplot aes geom_point geom_line geom_text
-#'   scale_size_continuous scale_color_gradientn scale_y_log10
-#'   labs theme_classic theme element_text element_rect element_line element_blank
+#' @importFrom dplyr mutate select filter arrange group_by summarise ungroup
+#' @importFrom dplyr distinct rename n everything bind_rows first last between
+#' @importFrom tidyr pivot_longer pivot_wider separate unite drop_na
+#' @importFrom ggplot2 ggplot aes geom_point geom_line geom_text geom_tile
+#' @importFrom ggplot2 geom_label theme labs guides guide_legend scale_y_log10 scale_size_continuous
+#' @importFrom ggplot2 scale_color_gradient scale_fill_gradient theme_minimal element_text
 #' @importFrom ggrepel geom_text_repel
-#' @importFrom data.table rbindlist
+#' @importFrom scales percent_format comma
+#' @importFrom reshape2 melt dcast
+#' @importFrom data.table fread fwrite rbindlist
 #' @importFrom parallel mclapply
-#' @importFrom reshape2 melt
-#' @importFrom scales comma
-#' @importFrom TwoSampleMR extract_instruments extract_outcome_data harmonise_data mr
+#' @importFrom TwoSampleMR extract_instruments harmonise_data mr
+#' @importFrom ieugwasr ld_clump ld_matrix
 #'
 #' @examples
 #' \dontrun{
@@ -80,6 +83,9 @@ mr_result_across_pval_thresholds <- function(exposure_id, outcome_id) {
 
         # Step 2: Loop through outcomes
         for (outcome0 in outcome_list) {
+
+          Sys.sleep(runif(1, 1, 5))
+
           tryCatch({
             # Step 3: Extract outcome data
             outcome1 <- extract_outcome_data(snps = exposure6$SNP, outcomes = outcome0)
